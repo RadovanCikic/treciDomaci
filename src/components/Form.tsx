@@ -5,46 +5,19 @@ import React, { useEffect, useState } from 'react'
 type BaseInput = {
     name: string,
     label: string,
-    required: boolean
-}
-type TextInput = {
-    inputType: 'input',
+    required: boolean,
     type: 'text' | 'number' | 'email' | 'password'
-
 }
 
-type Option = {
-    value: string | number,
-    label: string,
-}
 
-type SelectInput = {
-    inputType: 'select'
-    options: Option[]
-}
-
-type FullInputType = BaseInput & (SelectInput | TextInput)
 
 interface Props {
-    initialState: any,
-    inputs: FullInputType[],
+    inputs: BaseInput[],
     onSubmit: (val: any) => any
 }
 
 export default function Form(props: Props) {
-    const [formState, setFormState] = useState(props.initialState);
-
-    useEffect(() => {
-        if (props.initialState) {
-            setFormState(props.initialState)
-        } else {
-            setFormState(props.inputs.reduce((acc, input) => {
-                acc[input.name] = input.inputType === 'input' ? '' : 0
-                return acc;
-            }, {} as any))
-        }
-    }, [props.initialState, props.inputs]);
-
+    const [formState, setFormState] = useState({} as any);
     return (
         <form
             onSubmit={e => {
@@ -57,48 +30,21 @@ export default function Form(props: Props) {
                     return (
                         <div className='form-group' key={input.name}>
                             <label >{input.label}</label>
-                            {
-                                input.inputType === 'input' ? (
-                                    <input
-                                        required={input.required}
-                                        className='form-control'
-                                        type={input.type}
-                                        value={formState[input.name]}
-                                        onChange={e => {
-                                            const value = e.currentTarget.value;
-                                            setFormState((prev: any) => {
-                                                return {
-                                                    ...prev,
-                                                    [input.name]: value
-                                                }
-                                            })
-                                        }}
-                                    />
-                                ) : (
-                                    <select
-                                        required={input.required}
-                                        className='form-control'
-                                        value={formState[input.name]}
-                                        onChange={e => {
-                                            const value = e.currentTarget.value;
-                                            setFormState((prev: any) => {
-                                                return {
-                                                    ...prev,
-                                                    [input.name]: Number(value)
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        {
-                                            input.options.map(option => {
-                                                return (
-                                                    <option value={option.label}>{option.label}</option>
-                                                )
-                                            })
+                            <input
+                                required={input.required}
+                                className='form-control'
+                                type={input.type}
+                                value={formState[input.name]}
+                                onChange={e => {
+                                    const value = e.currentTarget.value;
+                                    setFormState((prev: any) => {
+                                        return {
+                                            ...prev,
+                                            [input.name]: value
                                         }
-                                    </select>
-                                )
-                            }
+                                    })
+                                }}
+                            />
                         </div>
                     )
                 })

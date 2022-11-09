@@ -17,7 +17,6 @@ function App() {
       <div className='container mt-5'>
         <h1 className='text-center m-3'>Login</h1>
         <Form
-          initialState={{ email: '', password: '' }}
           onSubmit={async val => {
             try {
               const res = await axios.post('/login', val);
@@ -31,14 +30,12 @@ function App() {
             {
               label: 'Email',
               name: 'email',
-              inputType: 'input',
               required: true,
               type: 'email'
             },
             {
               label: 'Password',
               name: 'password',
-              inputType: 'input',
               required: true,
               type: 'password'
             }
