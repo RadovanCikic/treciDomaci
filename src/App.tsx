@@ -4,6 +4,10 @@ import './App.css';
 import { User } from './types';
 import Form from './components/Form';
 import axios from 'axios';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import ActorsPage from './components/ActorsPage';
+import MoviesPage from './components/MoviesPage';
 axios.defaults.baseURL = 'http://localhost:8000/api'
 function App() {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -45,22 +49,13 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={(<MoviesPage />)} />
+        <Route path='/actors' element={<ActorsPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

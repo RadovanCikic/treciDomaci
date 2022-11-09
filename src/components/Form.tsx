@@ -103,7 +103,7 @@ export default function Form(props: Props) {
                     )
                 })
             }
-            <button className='btn btn-primary mt-2 form-control'>Submit</button>
+            <button className='btn btn-primary mt-2 form-c'>Submit</button>
         </form>
     )
 }
