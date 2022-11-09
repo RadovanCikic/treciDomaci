@@ -4,19 +4,22 @@ import React, { useEffect, useState } from 'react'
 
 type BaseInput = {
     name: string,
-    label: string
+    label: string,
+    required: boolean
 }
 type TextInput = {
-    type: 'input'
+    inputType: 'input',
+    type: 'text' | 'number' | 'email' | 'password'
+
 }
 
 type Option = {
     value: string | number,
-    label: string
+    label: string,
 }
 
 type SelectInput = {
-    type: 'select'
+    inputType: 'select'
     options: Option[]
 }
 
@@ -36,7 +39,7 @@ export default function Form(props: Props) {
             setFormState(props.initialState)
         } else {
             setFormState(props.inputs.reduce((acc, input) => {
-                acc[input.name] = input.type === 'input' ? '' : 0
+                acc[input.name] = input.inputType === 'input' ? '' : 0
                 return acc;
             }, {} as any))
         }
@@ -55,9 +58,11 @@ export default function Form(props: Props) {
                         <div className='form-group' key={input.name}>
                             <label >{input.label}</label>
                             {
-                                input.type === 'input' ? (
+                                input.inputType === 'input' ? (
                                     <input
+                                        required={input.required}
                                         className='form-control'
+                                        type={input.type}
                                         value={formState[input.name]}
                                         onChange={e => {
                                             const value = e.currentTarget.value;
@@ -71,6 +76,7 @@ export default function Form(props: Props) {
                                     />
                                 ) : (
                                     <select
+                                        required={input.required}
                                         className='form-control'
                                         value={formState[input.name]}
                                         onChange={e => {
@@ -97,6 +103,7 @@ export default function Form(props: Props) {
                     )
                 })
             }
+            <button className='btn btn-primary mt-2 form-control'>Submit</button>
         </form>
     )
 }
